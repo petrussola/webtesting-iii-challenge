@@ -8,7 +8,7 @@ let wrapper;
 beforeEach(() => {
     wrapper = rtl.render(<Controls locked={false} closed={false} />);
 });
-// afterEach(rtl.cleanup);
+afterEach(rtl.cleanup);
 
 describe('Controls component', () => {
     test('provide buttons to toggle the closed and locked states', () => {
@@ -24,5 +24,12 @@ describe('Controls component', () => {
         rtl.cleanup();
         wrapper = rtl.render(<Controls locked={false} closed={false} />)
         expect(wrapper.getByTestId('toggleLocked')).toBeDisabled();
+    });
+    test('buttons text changes to reflect the state the door will be in if clicked', () => {
+        rtl.cleanup();
+        wrapper = rtl.render(<Controls locked={false} closed={true} />)
+        let buttonClose = wrapper.getByTestId('toggleClosed');
+        rtl.fireEvent.click(buttonClose);
+        expect(buttonClose).toHaveTextContent(/open gate/i);
     })
 })
